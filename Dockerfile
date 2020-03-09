@@ -3,6 +3,9 @@ FROM ubuntu:18.10
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+##UBUNTU 18.10 is no longer supported!!! Let's use old-releases until we migrate to UBUNTU 18.04
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 RUN apt-get update && apt-get -y upgrade && apt-get -y install curl wget gnupg && rm -rf /var/lib/apt/lists/*
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|apt-key add -
 
@@ -57,9 +60,9 @@ WORKDIR /home/sip/eval
 
 #Download large programs generation of which requires a fast solver such as Gurobi
 #Users can indeed generate these files using on their end by referring to the instructions given in the experimental branch of sip-composition-eval
-RUN wget https://syncandshare.lrz.de/download/MlVoQlBpMXpVMnJQWVMzUzN0UWRU/mibench-cov.tar.xz && \
-    tar -xJf /home/sip/eval/LABELED-BCs/mibench-cov.tar.xz -C /home/sip/eval/LABELED-BCs/ && \
-    rm -r /home/sip/eval/LABELED-BCs/mibench-cov.tar.xz
+RUN wget https://syncandshare.lrz.de/download/MlVoQlBpMXpVMnJQWVMzUzN0UWRU/LABELED-BCs.tar.gz
+#RUN tar -xvf /home/sip/eval/LABELED-BCs.tar.gz -C /home/sip/eval/LABELED-BCs
+#RUN rm -r /home/sip/eval/LABELED-BCs.tar.gz
 
 
 
