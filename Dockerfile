@@ -3,24 +3,29 @@ FROM ubuntu:18.10
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-##UBUNTU 18.10 is no longer supported!!! Let's use old-releases until we migrate to UBUNTU 18.04
 RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
-RUN apt-get update && apt-get -y upgrade && apt-get -y install curl wget gnupg && rm -rf /var/lib/apt/lists/*
+#RUN echo "deb http://old-releases.ubuntu.com/ubuntu/ cosmic main restricted universe multiverse" >> /etc/apt/sources.list && \
+#echo "deb http://old-releases.ubuntu.com/ubuntu/ cosmic-updates main restricted universe multiverse" >> /etc/apt/sources.list && \
+#echo "deb http://old-releases.ubuntu.com/ubuntu/ cosmic-security main restricted universe multiverse" >> /etc/apt/sources.list
+
+RUN apt-get update && \
+ apt-get -y upgrade && apt-get -y install curl wget gnupg 
+RUN rm -rf /var/lib/apt/lists/*
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|apt-key add -
 
 RUN echo "deb http://apt.llvm.org/cosmic/ llvm-toolchain-cosmic-6.0 main" >> /etc/apt/sources.list && \
     echo "deb-src http://apt.llvm.org/cosmic/ llvm-toolchain-cosmic-6.0 main" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get -y install tar xz-utils cmake ninja-build build-essential libffi-dev python libboost1.67-all-dev git libssl-dev libncurses5-dev \
+    apt-get -y install tar xz-utils cmake ninja-build build-essential libffi-dev python  libboost1.67-all-dev git libssl-dev libncurses5-dev \
                python-pip radare2 time pandoc python3-setuptools python3-pip python3-tempita clang-7 lldb-7 lld-7 llvm-7 python-matplotlib glpk-utils libglpk-dev glpk-doc&& \
     rm -rf /var/lib/apt/lists/* && \
       mkdir -p /home/sip/ && \
       cd /home/sip/ && git clone https://github.com/nlohmann/json.git && mkdir -p /home/sip/json/build/ && cd /home/sip/json/build/ && cmake -DJSON_BuildTests=Off --config=Release .. && make && make install && cd /home/sip && rm -rf /home/sip/json/ && \
     pip install argparse numpy pandas r2pipe pwn benchexec==1.16 pypandoc && \
     pip3 install --upgrade pip && \
-    pip3 install gensim sklearn tabulate tensorflow stellargraph keras tensorflow-cpu tables && \
+    pip3 install gensim==3.8.1 sklearn tabulate tensorflow==2.1.0 stellargraph==0.10.0 keras==2.3.1 tensorflow-cpu==2.1.0 tables && \
     wget https://github.com/sosy-lab/benchexec/releases/download/1.16/benchexec_1.16-1_all.deb && dpkg -i benchexec_*.deb && rm benchexec_*.deb
     
 WORKDIR /
