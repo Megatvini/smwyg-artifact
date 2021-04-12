@@ -25,7 +25,7 @@ RUN apt-get update && \
       cd /home/sip/ && git clone https://github.com/nlohmann/json.git && mkdir -p /home/sip/json/build/ && cd /home/sip/json/build/ && cmake -DJSON_BuildTests=Off --config=Release .. && make && make install && cd /home/sip && rm -rf /home/sip/json/ && \
     pip install argparse numpy pandas r2pipe pwn benchexec==1.16 pypandoc && \
     pip3 install --upgrade pip && \
-    pip3 install gensim==3.8.1 sklearn tabulate tensorflow==2.1.0 stellargraph==0.10.0 keras==2.3.1 tensorflow-cpu==2.1.0 tables && \
+    pip3 install gensim==3.8.1 statsmodels sklearn tabulate tensorflow==2.1.0 stellargraph==0.10.0 keras==2.3.1 tensorflow-cpu==2.1.0 tables && \
     wget https://github.com/sosy-lab/benchexec/releases/download/1.16/benchexec_1.16-1_all.deb && dpkg -i benchexec_*.deb && rm benchexec_*.deb
     
 WORKDIR /
