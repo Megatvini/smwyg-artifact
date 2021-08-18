@@ -36,7 +36,7 @@ RUN cd /lemon-1.3.1/build && cmake .. && make -j4 && make install
 
 WORKDIR /home/sip
 RUN git clone https://github.com/mr-ma/composition-function-filter.git function-filter && mkdir -p /home/sip/function-filter/build && cd /home/sip/function-filter/build && cmake --config=Release .. && make -j4 && make install 
-RUN git clone -b smwyg https://github.com/mr-ma/composition-framework.git && mkdir -p /home/sip/composition-framework/build && cd /home/sip/composition-framework/build && cmake --config=Release .. && make -j4 && make install
+RUN git clone -b smwyg https://github.com/Megatvini/composition-framework.git && mkdir -p /home/sip/composition-framework/build && cd /home/sip/composition-framework/build && cmake --config=Release .. && make -j4 && make install
 
 
 
